@@ -42,12 +42,11 @@ class ImageUploadController extends Controller
             if (!$ssh->login(env('RM_IS_USER'), env('RM_IS_PASS'))) {
                 return response()->json(['success'=>new \Exception('Login failed')]);
             } else {
-                return response()->json(['success'=>'wget -P /root/AnimatedDrawings/examples/drawings '.env('APP_URL').'images/'.$imageName.'.'.$image->getClientOriginalExtension()]);
-                // if($ssh->exec('wget -P /root/AnimatedDrawings/examples/drawings '.env('APP_URL').'images/'.$imageName.'.'.$image->getClientOriginalExtension())){
-                //     return response()->json(['success'=>$imageName]);
-                // } else {
-                //     return response()->json(['failed'=>'Failed to upload image to server.']);
-                // }
+                if($ssh->exec('wget -P /root/AnimatedDrawings/examples/drawings '.env('APP_URL').'images/'.$imageName.'.'.$image->getClientOriginalExtension())){
+                    return response()->json(['success'=>$imageName]);
+                } else {
+                    return response()->json(['failed'=>'Failed to upload image to server.']);
+                }
   
             }
         }
