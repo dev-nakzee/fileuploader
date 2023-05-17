@@ -43,7 +43,7 @@ class ImageUploadController extends Controller
         if (!$sftp->login(env('RM_IS_USER'), env('RM_IS_PASS'))) {
             throw new \Exception('Login failed');
         } else {
-            if($sftp->put(env('RM_IS_IDIR').$imageName.'.'.$image->getClientOriginalExtension(), storage_path().$imageName.'.'.$image->getClientOriginalExtension(), SFTP::SOURCE_LOCAL_FILE)){
+            if($sftp->put(env('RM_IS_IDIR').$imageName.'.'.$image->getClientOriginalExtension(), public_path().$imageName.'.'.$image->getClientOriginalExtension(), SFTP::SOURCE_LOCAL_FILE)){
                 return response()->json(['success'=>$imageName]);
             }
         }
