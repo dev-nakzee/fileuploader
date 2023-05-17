@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ImageUpload;
 use Illuminate\Http\Request;
-use phpseclib3\Net\SFTP;
+use phpseclib3\Net\SSH2;
 
 class ImageUploadController extends Controller
 {
@@ -34,17 +34,20 @@ class ImageUploadController extends Controller
         $imageName = now()->timestamp;
         $image->move(public_path('images'),$imageName.'.'.$image->getClientOriginalExtension());
         
-        // $imageUpload = new ImageUpload();
-        // $imageUpload->filename = $imageName.'.'.$image->getClientOriginalExtension();
-        // $imageUpload->image_id = $imageName;
-        // $imageUpload->save();
-
-        $sftp = new SFTP(env('RM_IS_HOST'));
-        if (!$sftp->login(env('RM_IS_USER'), env('RM_IS_PASS'))) {
-            throw new \Exception('Login failed');
-        } else {
-            if($sftp->put(env('RM_IS_IDIR').$imageName.'.'.$image->getClientOriginalExtension(), public_path().$imageName.'.'.$image->getClientOriginalExtension(), SFTP::SOURCE_LOCAL_FILE)){
-                return response()->json(['success'=>$imageName]);
+        $imageUpload = new ImageUpload();
+        $imageUpload->filename = $imageName.'.'.$image->getClientOriginalExtension();
+        $imageUpload->image_id = $imageName;
+        if($imageUpload->save()){
+            $ssh = new SSH2(env('RM_IS_HOST'));
+            if (!$ssh->login(env('RM_IS_USER'), env('RM_IS_PASS'))) {
+                return response()->json(['success'=>new \Exception('Login failed')]);
+            } else {
+                if($ssh->exec('wget -P /root/AnimatedDrawings/examples/drawings '.env('APP_URL').'images/'.$imageName.'.'.$image->getClientOriginalExtension())){
+                    return response()->json(['success'=>$imageName]);
+                } else {
+                    return response()->json(['failed'=>'Failed to upload image to server.']);
+                }
+  
             }
         }
     }
