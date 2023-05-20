@@ -32,19 +32,19 @@ class ImageUploadController extends Controller
         //
         $image = $request->file('file');
         $imageName = now()->timestamp;
-        $image->move(public_path('images'),$imageName.'.'.$image->getClientOriginalExtension());
+        $filename = $imageName.'.'.$image->getClientOriginalExtension();
+        $image->move(public_path('images'),$filename);
         
         $imageUpload = new ImageUpload();
-        $imageUpload->filename = $imageName.'.'.$image->getClientOriginalExtension();
+        $imageUpload->filename = $filename;
         $imageUpload->image_id = $imageName;
         if($imageUpload->save()){
             $ssh = new SSH2(env('RM_IS_HOST'));
             if (!$ssh->login(env('RM_IS_USER'), env('RM_IS_PASS'))) {
                 return response()->json(['success'=>new \Exception('Login failed')]);
             } else {
-                $ssh->exec('wget -P /root/AnimatedDrawings/examples/drawings '.env('APP_URL').'images/'.$imageName.'.'.$image->getClientOriginalExtension());
-                return response()->json(['success'=>$imageName]);
-  
+                //$ssh->exec('wget -P /root/AnimatedDrawings/examples/drawings '.env('APP_URL').'images/'.$imageName.'.'.$image->getClientOriginalExtension());
+                return response()->json(['success'=>'wget -P /root/AnimatedDrawings/examples/drawings '.env('APP_URL').'images/'.$imageName.'.'.$image->getClientOriginalExtension()]);
             }
         }
     }
