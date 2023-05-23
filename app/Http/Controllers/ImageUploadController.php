@@ -73,6 +73,9 @@ class ImageUploadController extends Controller
         //
     }
 
+    public function receive(Request $request, $data) {
+        return $data;
+    }
     /**
      * Remove the specified resource from storage.
      */
