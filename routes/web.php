@@ -22,4 +22,4 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::post('image/upload', [App\Http\Controllers\ImageUploadController::class, 'store'])->name('image.upload');
-Route::get('/get-response/{data}', [App\Http\Controllers\ImageUploadController::class, 'receive'])->names('video.response');
+#Route::get('/get-response/{data}', [App\Http\Controllers\ImageUploadController::class, 'receive'])->names('video.response');
