@@ -17,6 +17,9 @@ use App\Http\Controllers\ImageUploadController;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/get-response', function () {
+    return 'hello';
+});
 
 Auth::routes();
 
