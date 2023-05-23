@@ -44,7 +44,7 @@ class ImageUploadController extends Controller
             if (!$ssh->login(env('RM_IS_USER'), env('RM_IS_PASS'))) {
                 return response()->json(['success'=>new \Exception('Login failed')]);
             } else {
-                $ssh->exec('wget -P /root/AnimatedDrawings/examples/drawings '.env('APP_URL').'images/'.$imageName.'.'.$image->getClientOriginalExtension());
+                //$ssh->exec('wget -P /root/AnimatedDrawings/examples/drawings '.env('APP_URL').'images/'.$imageName.'.'.$image->getClientOriginalExtension());
                 return response()->json(['success'=>'wget -P /root/AnimatedDrawings/examples/drawings '.env('APP_URL').'images/'.$imageName.'.'.$image->getClientOriginalExtension()]);
             }
         }
@@ -74,12 +74,17 @@ class ImageUploadController extends Controller
         //
     }
 
-    public function receive(Request $request, $data) {
-        $rawdata = new hook_data();
-        $rawdata->raw_data = $data;
-        if($rawdata->save()) {
-            return response()->json(['success'=>'1', 'message'=>'Data received successfully']);
+    public function receive(Request $request, $success, $data) {
+        if($success == 1) {
+            $rawdata = new hook_data();
+            $rawdata->raw_data = $data;
+            if($rawdata->save()) {
+                return response()->json(['success'=>'1', 'message'=>'Data received successfully']);
+            }
+        } else {
+            return response()->json(['success'=>'0', 'message'=>'Data failed to receive']);
         }
+        
     }
     /**
      * Remove the specified resource from storage.
