@@ -27,6 +27,7 @@ class HomeController extends Controller
         return view('home');
     }
     public function receive(Request $request) {
+        dd($request);
         $success = $request->success;
         $data = $request->data;
         if($success == 1) {
