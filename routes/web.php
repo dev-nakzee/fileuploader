@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImageUploadController;
+use App\Http\Controllers\Webhooks;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,4 +24,4 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::post('image/upload', [App\Http\Controllers\ImageUploadController::class, 'store'])->name('image.upload');
-Route::any('/get-response/{success}/{data?}', [App\Http\Controllers\ImageUploadController::class, 'receive'])->name('video.response');
+Route::get('/get-response/{success}/{data?}', [App\Http\Controllers\HomeController::class, 'receive'])->name('video.response');

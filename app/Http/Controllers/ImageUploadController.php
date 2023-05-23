@@ -74,19 +74,6 @@ class ImageUploadController extends Controller
         //
     }
 
-    public function receive(Request $request, $success, $data) {
-        $success = $request->id;
-        $data = $request->data;
-        if($success == 1) {
-            $rawdata = new hook_data();
-            $rawdata->raw_data = $data;
-            if($rawdata->save()) {
-                return response()->json(['success'=>'1', 'message'=>'Data received successfully']);
-            }
-        } else {
-            return response()->json(['success'=>'0', 'message'=>'Data failed to receive']);
-        }
-    }
     /**
      * Remove the specified resource from storage.
      */
