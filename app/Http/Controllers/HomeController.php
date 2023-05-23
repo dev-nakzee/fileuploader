@@ -27,9 +27,11 @@ class HomeController extends Controller
         return view('home');
     }
     public function receive(Request $request) {
-        dd($request);
         $success = $request->success;
-        $data = $request->data;
+        
+        if($request->data){
+            $data = $request->data;
+        }
         if($success == 1) {
             $rawdata = new hook_data();
             $rawdata->raw_data = $data;
