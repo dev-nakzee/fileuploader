@@ -22,5 +22,5 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::post('image/upload', [App\Http\Controllers\ImageUploadController::class, 'store'])->name('image.upload');
-Route::any('/get-response/1/{data}', [App\Http\Controllers\ImageUploadController::class, 'receive'])->name('video.response.success');
-Route::any('/get-response/0/{data}', [App\Http\Controllers\ImageUploadController::class, 'failure'])->name('video.response.fail');
+Route::get('/get-response/1/{data}', [App\Http\Controllers\ImageUploadController::class, 'receive'])->name('video.response.success');
+Route::get('/get-response/0/{data}', [App\Http\Controllers\ImageUploadController::class, 'failure'])->name('video.response.fail');
