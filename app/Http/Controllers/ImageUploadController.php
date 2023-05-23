@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ImageUpload;
+use App\Models\hook_data;
 use Illuminate\Http\Request;
 use phpseclib3\Net\SSH2;
 
@@ -74,7 +75,11 @@ class ImageUploadController extends Controller
     }
 
     public function receive(Request $request, $data) {
-        return $data;
+        $rawdata = new hook_data();
+        $rawdata->raw_data = $data;
+        if($rawdata->save()) {
+            return response()->json(['success'=>'1', 'message'=>'Data received successfully']);
+        }
     }
     /**
      * Remove the specified resource from storage.
